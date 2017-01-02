@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Requests\InstallRequest;
-
+use App\User;
 
 class InstallController extends Controller
 {
@@ -108,7 +108,11 @@ class InstallController extends Controller
             '--force' => true,
         ]);
 
-        return redirect('/');
+
+        if ( User::count()>0 ) {
+            return redirect('/');
+        }
+        return redirect('/register');
 
     }
 
