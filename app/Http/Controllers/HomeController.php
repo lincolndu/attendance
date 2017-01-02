@@ -29,17 +29,21 @@ class HomeController extends Controller
     public function index()
     {
         $logged_id= Auth::id();
+
         $check= Check::select('check_in', 'check_out')
                         ->where('user_id', $logged_id)
                         ->orderBy('id','desc')
                         ->first();
 
         $today = date('Ydm');
-        $check_in= date('Ydm', strtotime($check->check_in));
 
-        if ( $today != $check_in && Auth::user()->role != 'admin') {
-            return redirect('check');
+        if(count($check)>0){
+           $check_in= date('Ydm', strtotime($check->check_in));
+            if ( $today != $check_in && Auth::user()->role != 'admin') {
+                return redirect('check');
+            } 
         }
+        
 
         $users= User::orderBy('id', 'desc')->get();
 
